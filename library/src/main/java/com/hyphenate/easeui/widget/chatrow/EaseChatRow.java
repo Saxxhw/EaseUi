@@ -147,10 +147,10 @@ public abstract class EaseChatRow extends LinearLayout {
             //set nickname and avatar
             String avatar = message.getStringAttribute(EaseConstant.CHAT_AVATAR, "");
             if (message.direct() == Direct.SEND) {
-                GlideApp.with(context).load(avatar).into(userAvatarView);
+                GlideApp.with(context).load(avatar).placeholder(R.drawable.ease_default_avatar).into(userAvatarView);
             } else {
-                String nickname = message.getStringAttribute(EaseConstant.CHAT_NICK_NAME, "");
-                GlideApp.with(context).load(avatar).into(userAvatarView);
+                String nickname = message.getStringAttribute(EaseConstant.CHAT_NICK_NAME, "系统管理员");
+                GlideApp.with(context).load(avatar).placeholder(R.drawable.ease_default_avatar).into(userAvatarView);
                 usernickView.setText(nickname);
             }
         }
