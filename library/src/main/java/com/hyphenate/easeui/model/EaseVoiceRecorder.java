@@ -49,7 +49,7 @@ public class EaseVoiceRecorder {
             recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             recorder.setAudioChannels(1); // MONO
-            recorder.setAudioSamplingRate(8000); // 8000Hz
+            recorder.setAudioSamplingRate(16000); // 8000Hz
             recorder.setAudioEncodingBitRate(64); // seems if change this to
                                                     // 128, still got same file
                                                     // size.
@@ -105,7 +105,10 @@ public class EaseVoiceRecorder {
                     file.delete();
                 }
             } catch (IllegalStateException e) {
-            } catch (RuntimeException e){}
+                e.printStackTrace();
+            } catch (RuntimeException e){
+                e.printStackTrace();
+            }
             isRecording = false;
         }
     }
