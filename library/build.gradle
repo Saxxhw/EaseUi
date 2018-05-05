@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 9
+        versionName "1.0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -29,7 +29,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.github.Saxxhw:BaseLibrary:1.1.6'
+    compile 'com.github.Saxxhw:BaseLibrary:1.1.7'
     compile files('libs/hyphenatechat_3.3.9.jar')
     compile 'com.parse:parse-android:1.13.1'
 }
