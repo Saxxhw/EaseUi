@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 9
-        versionName "1.0.8"
+        versionCode 10
+        versionName "1.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -29,9 +29,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.github.Saxxhw:BaseLibrary:1.1.7'
-    compile files('libs/hyphenatechat_3.3.9.jar')
-    compile 'com.parse:parse-android:1.13.1'
+    api 'com.github.Saxxhw:BaseLibrary:1.1.8'
+    api files('libs/hyphenatechat_3.3.9.jar')
+    api 'com.parse:parse-android:1.13.1'
 }
 
 apply plugin: 'com.github.dcendents.android-maven'

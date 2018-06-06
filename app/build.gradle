@@ -30,8 +30,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':library')
-    compile files('libs/bdasr_V3_20171108_9800a2a.jar')
+    api project(':library')
+    api files('libs/bdasr_V3_20171108_9800a2a.jar')
     implementation files('libs/Msc.jar')
     implementation files('libs/Sunflower.jar')
 }
