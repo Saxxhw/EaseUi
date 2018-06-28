@@ -306,8 +306,16 @@ public class EaseInitHelper {
             public Intent getLaunchIntent(EMMessage message) {
                 Intent intent = new Intent(appContext, chatActivityClass);
                 Bundle bundle = new Bundle();
-                bundle.putString(EaseConstant.CHAT_GROUP_ID, message.getTo());
-                bundle.putString(EaseConstant.ORDER_CODE, message.getStringAttribute(EaseConstant.ORDER_CODE, message.getStringAttribute(EaseConstant.ORDER_CODE, "")));
+
+                ChatType chatType = message.getChatType();
+                if (chatType == ChatType.Chat) { // single chat message
+                    bundle.putString(EaseConstant.CHAT_GROUP_ID, message.getFrom());
+                    bundle.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
+                } else {
+                    bundle.putString(EaseConstant.CHAT_GROUP_ID, message.getTo());
+                    bundle.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_GROUP);
+                    bundle.putString(EaseConstant.ORDER_CODE, message.getStringAttribute(EaseConstant.ORDER_CODE, ""));
+                }
                 intent.putExtras(bundle);
                 return intent;
             }
