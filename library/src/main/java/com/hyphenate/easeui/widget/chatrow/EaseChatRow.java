@@ -19,6 +19,7 @@ import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.adapter.EaseMessageAdapter;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.model.styles.EaseMessageListItemStyle;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.EaseChatMessageList;
 import com.hyphenate.easeui.widget.EaseChatMessageList.MessageListItemClickListener;
 import com.hyphenate.easeui.widget.EaseImageView;
@@ -144,14 +145,21 @@ public abstract class EaseChatRow extends LinearLayout {
             }
         }
         if (userAvatarView != null) {
+            // set nickname and avatar
+//            String avatar = message.getStringAttribute(EaseConstant.CHAT_AVATAR, "");
+//            if (message.direct() == Direct.SEND) {
+//                GlideApp.with(context).load(avatar).placeholder(R.drawable.ease_default_avatar).into(userAvatarView);
+//            } else {
+//                String nickname = message.getStringAttribute(EaseConstant.CHAT_NICK_NAME, "系统管理员");
+//                GlideApp.with(context).load(avatar).placeholder(R.drawable.ease_default_avatar).into(userAvatarView);
+//                usernickView.setText(nickname);
+//            }
             //set nickname and avatar
-            String avatar = message.getStringAttribute(EaseConstant.CHAT_AVATAR, "");
             if (message.direct() == Direct.SEND) {
-                GlideApp.with(context).load(avatar).placeholder(R.drawable.ease_default_avatar).into(userAvatarView);
+                EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
             } else {
-                String nickname = message.getStringAttribute(EaseConstant.CHAT_NICK_NAME, "系统管理员");
-                GlideApp.with(context).load(avatar).placeholder(R.drawable.ease_default_avatar).into(userAvatarView);
-                usernickView.setText(nickname);
+                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
             }
         }
         if (EMClient.getInstance().getOptions().getRequireDeliveryAck()) {

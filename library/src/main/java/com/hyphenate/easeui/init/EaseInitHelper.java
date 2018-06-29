@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -978,20 +979,43 @@ public class EaseInitHelper {
     private EaseUser getUserInfo(String username) {
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
-        EaseUser user = null;
-        if (username.equals(EMClient.getInstance().getCurrentUser()))
+//        EaseUser user = null;
+//        if (username.equals(EMClient.getInstance().getCurrentUser()))
+//            return getUserProfileManager().getCurrentUserInfo();
+//        user = getContactList().get(username);
+//        if (user == null && getRobotList() != null) {
+//            user = getRobotList().get(username);
+//        }
+//
+//        // if user is not in your contacts, set inital letter for him/her
+//        if (user == null) {
+//            user = new EaseUser(username);
+//            EaseCommonUtils.setUserInitialLetter(user);
+//        }
+
+        if (username.equals(EMClient.getInstance().getCurrentUser())) {
             return getUserProfileManager().getCurrentUserInfo();
-        user = getContactList().get(username);
-        if (user == null && getRobotList() != null) {
-            user = getRobotList().get(username);
+        }
+        EaseUser easeUser;
+        if (contactList != null && contactList.containsKey(username)) {
+
+        } else { // 如果内存中没有，则将本地数据库中的取出到内存中。
+            getContactList();
+        }
+        // // TODO 获取不在好友列表里的群成员具体信息，即陌生人信息，demo未实现
+        // if (user == null && getRobotList() != null) {
+        // user = getRobotList().get(hxId);
+        // }
+        easeUser = contactList.get(username);
+        if (easeUser == null) {
+            easeUser = new EaseUser(username);
+        } else {
+            if (TextUtils.isEmpty(easeUser.getNick())) { // 如果名字为空，则显示环信号码
+                easeUser.setNick(easeUser.getUsername());
+            }
         }
 
-        // if user is not in your contacts, set inital letter for him/her
-        if (user == null) {
-            user = new EaseUser(username);
-            EaseCommonUtils.setUserInitialLetter(user);
-        }
-        return user;
+        return easeUser;
     }
 
     /**
@@ -1009,10 +1033,28 @@ public class EaseInitHelper {
             public void onMessageReceived(List<EMMessage> messages) {
                 for (EMMessage message : messages) {
                     EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
-                    // in background, do not refresh UI, notify it in notification bar
+                    // 应用在后台，不需要刷新UI,通知栏提示新消息
                     if (!easeUI.hasForegroundActivies()) {
                         getNotifier().onNewMsg(message);
                     }
+                    //************接收并处理扩展消息***********************
+                    String userName = message.getStringAttribute(EaseConstant.CHAT_NICK_NAME, "");
+                    String userPic = message.getStringAttribute(EaseConstant.CHAT_AVATAR, "");
+                    String hxIdFrom = message.getFrom();
+                    EaseUser easeUser = new EaseUser(hxIdFrom);
+                    easeUser.setAvatar(userPic);
+                    easeUser.setNick(userName);
+                    // 存入内存
+                    getContactList();
+                    contactList.put(hxIdFrom, easeUser);
+                    // 存入db
+                    UserDao dao = new UserDao(appContext);
+                    List<EaseUser> users = new ArrayList<EaseUser>();
+                    users.add(easeUser);
+                    dao.saveContactList(users);
+
+                    getModel().setContactSynced(true);
+                    // ******************扩展信息处理完成**********************
                 }
             }
 
