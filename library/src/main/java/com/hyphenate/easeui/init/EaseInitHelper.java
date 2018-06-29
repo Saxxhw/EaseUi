@@ -1236,17 +1236,20 @@ public class EaseInitHelper {
 
     /**
      * update user list to cache and database
+     *
+     * @param contactInfoList
      */
-    private void updateContactList(List<EaseUser> contactInfoList) {
+    public void updateContactList(List<EaseUser> contactInfoList) {
         for (EaseUser u : contactInfoList) {
             contactList.put(u.getUsername(), u);
         }
-        ArrayList<EaseUser> mList = new ArrayList<>();
+        ArrayList<EaseUser> mList = new ArrayList<EaseUser>();
         mList.addAll(contactList.values());
         demoModel.saveContactList(mList);
     }
 
-    private UserProfileManager getUserProfileManager() {
+
+    public UserProfileManager getUserProfileManager() {
         if (userProManager == null) {
             userProManager = new UserProfileManager();
         }
