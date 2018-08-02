@@ -33,6 +33,7 @@ import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.easeui.widget.presenter.EaseChatBigExpressionPresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatFilePresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatImagePresenter;
+import com.hyphenate.easeui.widget.presenter.EaseChatLivePresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatLocationPresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatRowPresenter;
 import com.hyphenate.easeui.widget.presenter.EaseChatTextPresenter;
@@ -63,6 +64,8 @@ public class EaseMessageAdapter extends BaseAdapter {
     private static final int MESSAGE_TYPE_RECV_FILE = 11;
     private static final int MESSAGE_TYPE_SENT_EXPRESSION = 12;
     private static final int MESSAGE_TYPE_RECV_EXPRESSION = 13;
+    private static final int MESSAGE_TYPE_RECV_LIVE = 14;
+    private static final int MESSAGE_TYPE_SENT_LIVE = 15;
 
 
     public int itemTypeCount;
@@ -149,6 +152,7 @@ public class EaseMessageAdapter extends BaseAdapter {
         handler.sendMessage(handler.obtainMessage(HANDLER_MESSAGE_REFRESH_LIST));
     }
 
+    @Override
     public EMMessage getItem(int position) {
         if (messages != null && position < messages.length) {
             return messages[position];
@@ -156,6 +160,7 @@ public class EaseMessageAdapter extends BaseAdapter {
         return null;
     }
 
+    @Override
     public long getItemId(int position) {
         return position;
     }
@@ -163,6 +168,7 @@ public class EaseMessageAdapter extends BaseAdapter {
     /**
      * get count of messages
      */
+    @Override
     public int getCount() {
         return messages == null ? 0 : messages.length;
     }
@@ -170,17 +176,19 @@ public class EaseMessageAdapter extends BaseAdapter {
     /**
      * get number of message type, here 14 = (EMMessage.Type) * 2
      */
+    @Override
     public int getViewTypeCount() {
         if (customRowProvider != null && customRowProvider.getCustomChatRowTypeCount() > 0) {
-            return customRowProvider.getCustomChatRowTypeCount() + 14;
+            return customRowProvider.getCustomChatRowTypeCount() + 16;
         }
-        return 14;
+        return 16;
     }
 
 
     /**
      * get type of item
      */
+    @Override
     public int getItemViewType(int position) {
         EMMessage message = getItem(position);
         if (message == null) {
@@ -188,12 +196,15 @@ public class EaseMessageAdapter extends BaseAdapter {
         }
 
         if (customRowProvider != null && customRowProvider.getCustomChatRowType(message) > 0) {
-            return customRowProvider.getCustomChatRowType(message) + 13;
+            return customRowProvider.getCustomChatRowType(message) + 15;
         }
 
         if (message.getType() == EMMessage.Type.TXT) {
             if (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)) {
                 return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_EXPRESSION : MESSAGE_TYPE_SENT_EXPRESSION;
+            }
+            if (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_LIVE, false)) {
+                return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_LIVE : MESSAGE_TYPE_SENT_LIVE;
             }
             return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_TXT : MESSAGE_TYPE_SENT_TXT;
         }
@@ -213,8 +224,8 @@ public class EaseMessageAdapter extends BaseAdapter {
         if (message.getType() == EMMessage.Type.FILE) {
             return message.direct() == EMMessage.Direct.RECEIVE ? MESSAGE_TYPE_RECV_FILE : MESSAGE_TYPE_SENT_FILE;
         }
-
-        return -1;// invalid
+        // invalid
+        return -1;
     }
 
     protected EaseChatRowPresenter createChatRowPresenter(EMMessage message, int position) {
@@ -228,6 +239,8 @@ public class EaseMessageAdapter extends BaseAdapter {
             case TXT:
                 if (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)) {
                     presenter = new EaseChatBigExpressionPresenter();
+                } else if (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_LIVE, false)) {
+                    presenter = new EaseChatLivePresenter();
                 } else {
                     presenter = new EaseChatTextPresenter();
                 }
@@ -255,6 +268,7 @@ public class EaseMessageAdapter extends BaseAdapter {
     }
 
 
+    @Override
     @SuppressLint("NewApi")
     public View getView(final int position, View convertView, ViewGroup parent) {
         EMMessage message = getItem(position);

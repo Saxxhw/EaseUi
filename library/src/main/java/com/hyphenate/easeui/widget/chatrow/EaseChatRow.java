@@ -191,14 +191,18 @@ public abstract class EaseChatRow extends LinearLayout {
                     EaseAvatarOptions avatarOptions = EaseUI.getInstance().getAvatarOptions();
                     if (avatarOptions != null && userAvatarView instanceof EaseImageView) {
                         EaseImageView avatarView = ((EaseImageView) userAvatarView);
-                        if (avatarOptions.getAvatarShape() != 0)
+                        if (avatarOptions.getAvatarShape() != 0) {
                             avatarView.setShapeType(avatarOptions.getAvatarShape());
-                        if (avatarOptions.getAvatarBorderWidth() != 0)
+                        }
+                        if (avatarOptions.getAvatarBorderWidth() != 0) {
                             avatarView.setBorderWidth(avatarOptions.getAvatarBorderWidth());
-                        if (avatarOptions.getAvatarBorderColor() != 0)
+                        }
+                        if (avatarOptions.getAvatarBorderColor() != 0) {
                             avatarView.setBorderColor(avatarOptions.getAvatarBorderColor());
-                        if (avatarOptions.getAvatarRadius() != 0)
+                        }
+                        if (avatarOptions.getAvatarRadius() != 0) {
                             avatarView.setRadius(avatarOptions.getAvatarRadius());
+                        }
                     }
                 } else {
                     userAvatarView.setVisibility(View.GONE);

@@ -54,4 +54,6 @@ public class EaseConstant {
     public static final String CHAT_AVATAR = "CHAT_AVATAR";
     // 昵称
     public static final String CHAT_NICK_NAME = "CHAT_NICK_NAME";
+
+    public static final String MESSAGE_ATTR_IS_LIVE = "em_is_live";
 }
