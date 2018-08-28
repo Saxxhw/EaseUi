@@ -10,6 +10,7 @@ import com.hyphenate.easeui.widget.presenter.EaseChatRowPresenter;
  *
  */
 public interface EaseCustomChatRowProvider {
+
     /**
      * 获取多少种类型的自定义chatrow<br/>
      * 注意，每一种chatrow至少有两种type：发送type和接收type
@@ -28,5 +29,4 @@ public interface EaseCustomChatRowProvider {
      * @return
      */
     EaseChatRowPresenter getCustomChatRow(EMMessage message, int position, BaseAdapter adapter);
-    
 }

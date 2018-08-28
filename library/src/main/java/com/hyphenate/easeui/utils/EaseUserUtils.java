@@ -26,9 +26,9 @@ public class EaseUserUtils {
      * @return
      */
     public static EaseUser getUserInfo(String username) {
-        if (userProvider != null)
+        if (userProvider != null) {
             return userProvider.getUser(username);
-
+        }
         return null;
     }
 

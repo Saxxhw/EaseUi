@@ -29,11 +29,10 @@ import com.saxxhw.glide.GlideApp;
 import java.util.Date;
 
 public abstract class EaseChatRow extends LinearLayout {
+
     public interface EaseChatRowActionCallback {
         void onResendClick(EMMessage message);
-
         void onBubbleClick(EMMessage message);
-
         void onDetachedFromWindow();
     }
 
@@ -154,7 +153,7 @@ public abstract class EaseChatRow extends LinearLayout {
 //                GlideApp.with(context).load(avatar).placeholder(R.drawable.ease_default_avatar).into(userAvatarView);
 //                usernickView.setText(nickname);
 //            }
-            //set nickname and avatar
+            // set nickname and avatar
             if (message.direct() == Direct.SEND) {
                 EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
             } else {
@@ -209,10 +208,11 @@ public abstract class EaseChatRow extends LinearLayout {
                 }
             }
             if (usernickView != null) {
-                if (itemStyle.isShowUserNick())
+                if (itemStyle.isShowUserNick()) {
                     usernickView.setVisibility(View.VISIBLE);
-                else
+                } else {
                     usernickView.setVisibility(View.GONE);
+                }
             }
             if (bubbleLayout != null) {
                 if (message.direct() == Direct.SEND) {

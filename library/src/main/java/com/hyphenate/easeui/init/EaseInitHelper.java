@@ -545,19 +545,19 @@ public class EaseInitHelper {
 
         @Override
         public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
-            // got an invitation
-            String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
-            EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
-            msg.setChatType(ChatType.GroupChat);
-            msg.setFrom(inviter);
-            msg.setTo(groupId);
-            msg.setMsgId(UUID.randomUUID().toString());
-            msg.addBody(new EMTextMessageBody(inviter + " " + st3));
-            msg.setStatus(Status.SUCCESS);
-            // save invitation as messages
-            EMClient.getInstance().chatManager().saveMessage(msg);
-            // notify invitation message
-            getNotifier().vibrateAndPlayTone(msg);
+//            // got an invitation
+//            String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
+//            EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
+//            msg.setChatType(ChatType.GroupChat);
+//            msg.setFrom(inviter);
+//            msg.setTo(groupId);
+//            msg.setMsgId(UUID.randomUUID().toString());
+//            msg.addBody(new EMTextMessageBody(inviter + " " + st3));
+//            msg.setStatus(Status.SUCCESS);
+//            // save invitation as messages
+//            EMClient.getInstance().chatManager().saveMessage(msg);
+//            // notify invitation message
+//            getNotifier().vibrateAndPlayTone(msg);
             showToast("auto accept invitation from groupId:" + groupId);
             broadcastManager.sendBroadcast(new Intent(EaseConstant.ACTION_GROUP_CHANAGED));
         }
